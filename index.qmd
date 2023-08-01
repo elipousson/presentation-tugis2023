@@ -407,12 +407,18 @@ These examples also don't highlight the spatial features of R to their fullest e
 
 ---
 
-![](images/2022-12-14_Commodore John Rodgers EMS INSPIRE Plan_ Primary Walking Routes.png)
+![Distribution of student addresses within a 10 walking distance of Commodore John Rodgers Elementary/Middle School](images/2022-12-14_Commodore John Rodgers EMS INSPIRE Plan_ Primary Walking Routes.png)
 
 ---
 
+![Poster sized map showing 10 minute walking distance to collect feedback from school community members at Commodore John Rodgers Elementary/Middle School](images/2023-01-12_com-john-rodgers-ems_outreach.jpeg)
 
-![]()
+---
+
+![Contact sheet with photos from a field survey of Harford Road sidewalk conditions in the Coldsteam Homestead Montebello neighborhood](images/2023_05-11_harford-road_sidewalk-condition-survey_pg_01.jpg)
+
+---
+
 
 ------------------------------------------------------------------------
 

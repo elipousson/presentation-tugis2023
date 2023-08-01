@@ -1,0 +1,79 @@
+[
+  {
+    "objectID": "index.html#what-is-r",
+    "href": "index.html#what-is-r",
+    "title": "Using R as your GIS",
+    "section": "2.1 What is R?",
+    "text": "2.1 What is R?\n\n\nR is a programming language best known for use as a statistical programming language often used in data science and research.\nLike Python or C++, R is an object-oriented, functional programming language where the base set of features can be extended through open-source packages.\n\n\n\n\nCourtesy Wikipedia\n\n\n\n\n\n\nA package is a bundle of code that a generous person has written, tested, and then given away. Most of the time packages are designed to solve a specific problem, so they to pull together functions related to a particular data science problem (e.g., data wrangling, visualisation, inference).\n\nFrom BasicBasics 2 (R-Ladies Sydney)"
+  },
+  {
+    "objectID": "index.html#how-does-r-work-with-spatial-data",
+    "href": "index.html#how-does-r-work-with-spatial-data",
+    "title": "Using R as your GIS",
+    "section": "2.2 How does R work with spatial data?",
+    "text": "2.2 How does R work with spatial data?\nTo get R working as our GIS, we need some packages.\nPackages are quick to install and load:\n\ninstall.packages(c(\"sf\", \"ggplot2\", \"dplyr\"))\n\nlibrary(sf)\nlibrary(ggplot2)\nlibrary(dplyr)"
+  },
+  {
+    "objectID": "index.html#about-the-inspire-program",
+    "href": "index.html#about-the-inspire-program",
+    "title": "Using R as your GIS",
+    "section": "3.1 About the INSPIRE Program",
+    "text": "3.1 About the INSPIRE Program\n\n24 small area plans for a 5-10 minute area around 28 new school buildings\nProgram launched in 2017 and 13 plans have been adopted\nI am a planner with a background in historic preservation and public health—not a GIS analyst or researcher"
+  },
+  {
+    "objectID": "index.html#how-am-i-using-r-for-inspire",
+    "href": "index.html#how-am-i-using-r-for-inspire",
+    "title": "Using R as your GIS",
+    "section": "3.2 How am I using R for INSPIRE?",
+    "text": "3.2 How am I using R for INSPIRE?\n\nCreate maps and tables for presentations and hand-outs (often in combination with Adobe Illustrator or Adobe InDesign)\nSummarize and combine data from city, state, and other sources\nWork with documents (see the {officer} package for more on R and Microsoft Word)\nBuild and maintain packages with processed data and custom data access functions\n\n\nFor brevity, these example rely of a number of custom packages that I’ve developed and published on GitHub. If we had more time today, I’d walk you through the code in detail and demonstrate the transformations and\nThese examples also don’t highlight the spatial features of R to their fullest extent. Buffers, spatial filters, and spatial joins cover a large share of how I work with spatal data. More often, my challenges center on the underlying attribute data: how can it be clearly standardized, visualized, and presented in an organized and accessible format."
+  },
+  {
+    "objectID": "index.html#where-are-these-planning-areas",
+    "href": "index.html#where-are-these-planning-areas",
+    "title": "Using R as your GIS",
+    "section": "3.3 Where are these planning areas?",
+    "text": "3.3 Where are these planning areas?"
+  },
+  {
+    "objectID": "index.html#mapping-crash-data",
+    "href": "index.html#mapping-crash-data",
+    "title": "Using R as your GIS",
+    "section": "3.4 Mapping Crash Data",
+    "text": "3.4 Mapping Crash Data\nThis first example,"
+  },
+  {
+    "objectID": "index.html#making-tables-with-u.s.-census-data",
+    "href": "index.html#making-tables-with-u.s.-census-data",
+    "title": "Using R as your GIS",
+    "section": "3.5 Making Tables with U.S. Census Data",
+    "text": "3.5 Making Tables with U.S. Census Data\nThe {tidycensus} package allows us to skip the Census website and download directly from the Census API:\n\nhousing_cost_data &lt;- get_acs(\n  geography = \"tract\",\n  table = \"B25105\",\n  county = \"Baltimore city\",\n  state = \"MD\",\n  geometry = TRUE\n)\n\nhousing_cost_data &lt;- st_transform(housing_cost_data, crs = 3857)"
+  },
+  {
+    "objectID": "index.html#exploring-school-enrollment-data",
+    "href": "index.html#exploring-school-enrollment-data",
+    "title": "Using R as your GIS",
+    "section": "3.6 Exploring School Enrollment Data",
+    "text": "3.6 Exploring School Enrollment Data\n\nlibrary(mapmaryland)\nlibrary(marylandedu)"
+  },
+  {
+    "objectID": "index.html#who-else-is-using-r",
+    "href": "index.html#who-else-is-using-r",
+    "title": "Using R as your GIS",
+    "section": "3.7 Who else is using R?",
+    "text": "3.7 Who else is using R?\n\nChicago Metropolitan Agency for Planning (e.g. using cmapgeo and other tools for internal analysis/visualization),\nthe California Integrated Transit Project (e.g. using tidytransit for standardizing transit data),\nUrban Institute’s Education Data API (e.g. using an R package to support research data access),\nand DataHaven (e.g. using tidycensus for reproducible reports like the Connecticut Town Equity Reports)"
+  },
+  {
+    "objectID": "index.html#books-on-programming-with-r",
+    "href": "index.html#books-on-programming-with-r",
+    "title": "Using R as your GIS",
+    "section": "4.1 Books on programming with R",
+    "text": "4.1 Books on programming with R\n\nR for Data Science by Hadley Wickham “will teach you how to do data science with R: You’ll learn how to get your data into R, get it into the most useful structure, transform it and visualize.”\nHands on Programming with R by Garrett Grolemund, is “an introduction to R as a programming language and is a great place to start if R is your first programming language*.”\nAdvanced R by Hadley Wickham “dives into the details of R the programming language; it’s great place to start if you have existing programming experience”"
+  },
+  {
+    "objectID": "index.html#books-on-spatial-data-analysis-with-r",
+    "href": "index.html#books-on-spatial-data-analysis-with-r",
+    "title": "Using R as your GIS",
+    "section": "4.2 Books on spatial data analysis with R",
+    "text": "4.2 Books on spatial data analysis with R"
+  }
+]

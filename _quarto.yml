@@ -1,0 +1,7 @@
+project:
+  title: "presentation-tugis2023"
+  type: website
+  output-dir: docs
+
+editor: visual
+

@@ -596,6 +596,8 @@ I use R for a little bit of everything:
 -   Create maps and tables for presentations and hand-outs (often in combination with Adobe Illustrator or Adobe InDesign)
 -   Extract data from or add content to documents (see the `{officer}` and `{officerExtras}` package)
 
+## What do I do with R?
+
 This work relies on a set of custom packages `{mapbaltimore}`, `{bcpss}`, and `{mapmaryland}` with city and state-specific data and data access functions.
 
 ::: notes
@@ -683,6 +685,8 @@ library(mapmaryland)
 area_crashes <- get_md_crash_data(area)
 
 area_crashes <- format_md_crash_data(area_crashes)
+
+area_crashes
 ```
 
 ::: footer

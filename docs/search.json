@@ -53,14 +53,21 @@
     "href": "index.html#what-do-i-do-with-r",
     "title": "Using R as your GIS",
     "section": "3.3 What do I do with R?",
-    "text": "3.3 What do I do with R?\nI use R for a little bit of everything:\n\nProcess survey or observation data collected in the “field”\nSummarize and combine data from spatial and non-spatial data sources\nCreate maps and tables for presentations and hand-outs (often in combination with Adobe Illustrator or Adobe InDesign)\nExtract data from or add content to documents (see the {officer} and {officerExtras} package)\n\nThis work relies on a set of custom packages {mapbaltimore}, {bcpss}, and {mapmaryland} with city and state-specific data and data access functions.\n\nFor brevity, these example rely of a number of custom packages that I’ve developed and published on GitHub. If we had more time today, I’d walk you through the code in detail and demonstrate the transformations and\nThese examples also don’t highlight the spatial features of R to their fullest extent. Buffers, spatial filters, and spatial joins cover a large share of how I work with spatal data. More often, my challenges center on the underlying attribute data: how can it be clearly standardized, visualized, and presented in an organized and accessible format."
+    "text": "3.3 What do I do with R?\nI use R for a little bit of everything:\n\nProcess survey or observation data collected in the “field”\nSummarize and combine data from spatial and non-spatial data sources\nCreate maps and tables for presentations and hand-outs (often in combination with Adobe Illustrator or Adobe InDesign)\nExtract data from or add content to documents (see the {officer} and {officerExtras} package)"
+  },
+  {
+    "objectID": "index.html#what-do-i-do-with-r-1",
+    "href": "index.html#what-do-i-do-with-r-1",
+    "title": "Using R as your GIS",
+    "section": "3.4 What do I do with R?",
+    "text": "3.4 What do I do with R?\nThis work relies on a set of custom packages {mapbaltimore}, {bcpss}, and {mapmaryland} with city and state-specific data and data access functions.\n\nFor brevity, these example rely of a number of custom packages that I’ve developed and published on GitHub. If we had more time today, I’d walk you through the code in detail and demonstrate the transformations and\nThese examples also don’t highlight the spatial features of R to their fullest extent. Buffers, spatial filters, and spatial joins cover a large share of how I work with spatal data. More often, my challenges center on the underlying attribute data: how can it be clearly standardized, visualized, and presented in an organized and accessible format."
   },
   {
     "objectID": "index.html#using-r-for-the-commodore-john-rodgers-ems-inspire-plan",
     "href": "index.html#using-r-for-the-commodore-john-rodgers-ems-inspire-plan",
     "title": "Using R as your GIS",
-    "section": "3.4 Using R for the Commodore John Rodgers EMS INSPIRE Plan",
-    "text": "3.4 Using R for the Commodore John Rodgers EMS INSPIRE Plan\n\n\nINSPIRE supports improvements along school walking routes but we first need to figure out:\n\nWhere are safety improvements needed?\nWhat routes do students take to school?"
+    "section": "3.5 Using R for the Commodore John Rodgers EMS INSPIRE Plan",
+    "text": "3.5 Using R for the Commodore John Rodgers EMS INSPIRE Plan\n\n\nINSPIRE supports improvements along school walking routes but we first need to figure out:\n\nWhere are safety improvements needed?\nWhat routes do students take to school?"
   },
   {
     "objectID": "index.html#what-are-the-advantages-of-using-r",

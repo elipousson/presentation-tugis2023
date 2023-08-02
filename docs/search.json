@@ -1,79 +1,100 @@
 [
   {
+    "objectID": "index.html#what-are-we-talking-about",
+    "href": "index.html#what-are-we-talking-about",
+    "title": "Using R as your GIS",
+    "section": "1.1 What are we talking about?",
+    "text": "1.1 What are we talking about?\n\nA Short Introduction to R\nUsing R at the Department of Planning\nWhy use R as your GIS?\n\nFind the presentation at elipousson.github.io/presentation-tugis2023/ or the code at github.com/elipousson/presentation-tugis2023\n\nGood afternoon.\nMy name is Eli Pousson. I am a planner with the Baltimore City Department of Planning—one of two planners supporting the city’s INSPIRE program. I also teach a course for the University of Maryland Baltimore County’s GIS certificate program and I am an enthusiastic R developer and an advocate for open-source tools and open data.\nMaybe I’d even say that I’m a really enthusiastic R developer. I was first introduced to the programming language about 4 years ago and I’ve developed around two dozen packages over the past three years. This is the work I’ll be talking about today.\nI use R as my GIS—my main tool for reading, writing, analyzing, and visualizing both spatial data and truly data of all kinds.\nOK. A quick show of hands: how many people have heard of the R programming language before today? Great. Now, how many of you have used R for working with spatial data?\nOur first part may be a bit of review for anyone with more experience but, if you want to go far, go together, so I’m going to start with a short introduction to R and working with spatial data in R.\nI’ll then share a few examples of the custom packages and workflows that I’m using to support my own work as a planner at the Department of Planning.\nI’ll then wrap up with making the case for why I think you may also want to try using R as your GIS highlight a few other exciting projects that are using this tool."
+  },
+  {
+    "objectID": "index.html#where-am-i-coming-from",
+    "href": "index.html#where-am-i-coming-from",
+    "title": "Using R as your GIS",
+    "section": "1.2 Where am I coming from?",
+    "text": "1.2 Where am I coming from?\nA few things about me:\n\nI work as a community planner at the Baltimore City Department of Planning\nI started learning R as a student at the John Hopkins University School of Public Health in 2019\nI started developing R packages while working at the Neighborhood Design Center in 2020\nI teach using a course on spatial data and R for the UMBC GIS Certificate program\n\n\n\nPlanner at the Baltimore City Department of Planning previously worked for the Neighborhood Design Center and a non-profit Baltimore Heritage\nTeacher with the University of Maryland Baltimore County GIS certificate program\nPicked up R starting in 2019 while studying public health at Johns Hopkins Bloomberg School of Public Health\nStarted making my first R package in October 2020 (and have developed over 24 packages in the past 3 years)\n\nThen, I’ll share a few quick examples of how we’re working with:\n\ncrash data;\nU.S. Census data; and\nschool enrollment and demographic data\n\n…using R and a wide variety of open-source packages and API services.\nFinally, I’ll wrap up by sharing a few examples of how R is being used for community planning in other places around the state and country."
+  },
+  {
     "objectID": "index.html#what-is-r",
     "href": "index.html#what-is-r",
     "title": "Using R as your GIS",
     "section": "2.1 What is R?",
-    "text": "2.1 What is R?\n\n\nR is a programming language best known for use as a statistical programming language often used in data science and research.\nLike Python or C++, R is an object-oriented, functional programming language where the base set of features can be extended through open-source packages.\n\n\n\n\nCourtesy Wikipedia\n\n\n\n\n\n\nA package is a bundle of code that a generous person has written, tested, and then given away. Most of the time packages are designed to solve a specific problem, so they to pull together functions related to a particular data science problem (e.g., data wrangling, visualisation, inference).\n\nFrom BasicBasics 2 (R-Ladies Sydney)"
+    "text": "2.1 What is R?\n\n\nR is best known for as a statistical programming language often used in data science and research.\nLike Python or C++, R is an object-oriented, functional programming language where the base set of features can be extended through open-source packages or libraries.\n\n\n\n\n\n\nA package is a bundle of code that a generous person has written, tested, and then given away. Most of the time packages are designed to solve a specific problem, so they to pull together functions related to a particular data science problem (e.g., data wrangling, visualisation, inference).\n\nFrom BasicBasics 2 (R-Ladies Sydney)"
   },
   {
     "objectID": "index.html#how-does-r-work-with-spatial-data",
     "href": "index.html#how-does-r-work-with-spatial-data",
     "title": "Using R as your GIS",
     "section": "2.2 How does R work with spatial data?",
-    "text": "2.2 How does R work with spatial data?\nTo get R working as our GIS, we need some packages.\nPackages are quick to install and load:\n\ninstall.packages(c(\"sf\", \"ggplot2\", \"dplyr\"))\n\nlibrary(sf)\nlibrary(ggplot2)\nlibrary(dplyr)"
+    "text": "2.2 How does R work with spatial data?\n\n\nThe {sf} package, first published in 2016, is the most popular R package for spatial data.\n\nExtension packages include:\n\nlwgeom for selected liblwgeom/PostGIS functions\nstars for raster data, and raster or vector data cubes (spatial time series)\nsfnetworks for geospatial network data"
+  },
+  {
+    "objectID": "index.html#take-a-look-at-sf-in-action",
+    "href": "index.html#take-a-look-at-sf-in-action",
+    "title": "Using R as your GIS",
+    "section": "2.3 Take a look at {sf} in action",
+    "text": "2.3 Take a look at {sf} in action\nPackages are simple to install:\n\ninstall.packages(c(\"sf\", \"ggplot2\", \"dplyr\"))\n\nAnd to load:\n\nlibrary(sf)\nlibrary(ggplot2)\nlibrary(dplyr)"
   },
   {
     "objectID": "index.html#about-the-inspire-program",
     "href": "index.html#about-the-inspire-program",
     "title": "Using R as your GIS",
     "section": "3.1 About the INSPIRE Program",
-    "text": "3.1 About the INSPIRE Program\n\n24 small area plans for a 5-10 minute area around 28 new school buildings\nProgram launched in 2017 and 13 plans have been adopted\nI am a planner with a background in historic preservation and public health—not a GIS analyst or researcher"
+    "text": "3.1 About the INSPIRE Program\n\n\nINSPIRE stands for Investing in Neighborhoods and Schools to Promote Improvement, Revitalization, and Excellence.\nThe Department of Planning is working with communities in a quarter-mile area (about a five minute walk) around each 21st Century School to create a plan that can guide new private and public investments in each area.\n\n\n\n\n\n\n24 small area plans for a 5-10 minute area around 28 new school buildings\nProgram launched in 2017 and 13 plans have been adopted\nI am a planner with a background in historic preservation and public health—not a GIS analyst or researcher"
   },
   {
-    "objectID": "index.html#how-am-i-using-r-for-inspire",
-    "href": "index.html#how-am-i-using-r-for-inspire",
+    "objectID": "index.html#using-r-for-the-inspire-program",
+    "href": "index.html#using-r-for-the-inspire-program",
     "title": "Using R as your GIS",
-    "section": "3.2 How am I using R for INSPIRE?",
-    "text": "3.2 How am I using R for INSPIRE?\n\nCreate maps and tables for presentations and hand-outs (often in combination with Adobe Illustrator or Adobe InDesign)\nSummarize and combine data from city, state, and other sources\nWork with documents (see the {officer} package for more on R and Microsoft Word)\nBuild and maintain packages with processed data and custom data access functions\n\n\nFor brevity, these example rely of a number of custom packages that I’ve developed and published on GitHub. If we had more time today, I’d walk you through the code in detail and demonstrate the transformations and\nThese examples also don’t highlight the spatial features of R to their fullest extent. Buffers, spatial filters, and spatial joins cover a large share of how I work with spatal data. More often, my challenges center on the underlying attribute data: how can it be clearly standardized, visualized, and presented in an organized and accessible format."
+    "section": "3.2 Using R for the INSPIRE Program",
+    "text": "3.2 Using R for the INSPIRE Program"
   },
   {
-    "objectID": "index.html#where-are-these-planning-areas",
-    "href": "index.html#where-are-these-planning-areas",
+    "objectID": "index.html#what-do-i-do-with-r",
+    "href": "index.html#what-do-i-do-with-r",
     "title": "Using R as your GIS",
-    "section": "3.3 Where are these planning areas?",
-    "text": "3.3 Where are these planning areas?"
+    "section": "3.3 What do I do with R?",
+    "text": "3.3 What do I do with R?\nI use R for a little bit of everything:\n\nProcess survey or observation data collected in the “field”\nSummarize and combine data from spatial and non-spatial data sources\nCreate maps and tables for presentations and hand-outs (often in combination with Adobe Illustrator or Adobe InDesign)\nExtract data from or add content to documents (see the {officer} and {officerExtras} package)\n\nThis work relies on a set of custom packages {mapbaltimore}, {bcpss}, and {mapmaryland} with city and state-specific data and data access functions.\n\nFor brevity, these example rely of a number of custom packages that I’ve developed and published on GitHub. If we had more time today, I’d walk you through the code in detail and demonstrate the transformations and\nThese examples also don’t highlight the spatial features of R to their fullest extent. Buffers, spatial filters, and spatial joins cover a large share of how I work with spatal data. More often, my challenges center on the underlying attribute data: how can it be clearly standardized, visualized, and presented in an organized and accessible format."
   },
   {
-    "objectID": "index.html#mapping-crash-data",
-    "href": "index.html#mapping-crash-data",
+    "objectID": "index.html#using-r-for-the-commodore-john-rodgers-ems-inspire-plan",
+    "href": "index.html#using-r-for-the-commodore-john-rodgers-ems-inspire-plan",
     "title": "Using R as your GIS",
-    "section": "3.4 Mapping Crash Data",
-    "text": "3.4 Mapping Crash Data\nThis first example,"
+    "section": "3.4 Using R for the Commodore John Rodgers EMS INSPIRE Plan",
+    "text": "3.4 Using R for the Commodore John Rodgers EMS INSPIRE Plan\n\n\nINSPIRE supports improvements along school walking routes but we first need to figure out:\n\nWhere are safety improvements needed?\nWhat routes do students take to school?"
   },
   {
-    "objectID": "index.html#making-tables-with-u.s.-census-data",
-    "href": "index.html#making-tables-with-u.s.-census-data",
+    "objectID": "index.html#what-are-the-advantages-of-using-r",
+    "href": "index.html#what-are-the-advantages-of-using-r",
     "title": "Using R as your GIS",
-    "section": "3.5 Making Tables with U.S. Census Data",
-    "text": "3.5 Making Tables with U.S. Census Data\nThe {tidycensus} package allows us to skip the Census website and download directly from the Census API:\n\nhousing_cost_data &lt;- get_acs(\n  geography = \"tract\",\n  table = \"B25105\",\n  county = \"Baltimore city\",\n  state = \"MD\",\n  geometry = TRUE\n)\n\nhousing_cost_data &lt;- st_transform(housing_cost_data, crs = 3857)"
+    "section": "4.1 What are the advantages of using R?",
+    "text": "4.1 What are the advantages of using R?\n\nSpeed: Working interactively at the command line or writing scripts can be even faster than pointing-and-clicking around a desktop GIS\nCollaboration:: Engaging with the open-source R community offers opportunities to work users and developers\nReproducibility: Writing transparent and documented workflows with parametrized functions that you can use, reuse, and adapt"
   },
   {
-    "objectID": "index.html#exploring-school-enrollment-data",
-    "href": "index.html#exploring-school-enrollment-data",
+    "objectID": "index.html#who-else-is-using-r-in-baltimore",
+    "href": "index.html#who-else-is-using-r-in-baltimore",
     "title": "Using R as your GIS",
-    "section": "3.6 Exploring School Enrollment Data",
-    "text": "3.6 Exploring School Enrollment Data\n\nlibrary(mapmaryland)\nlibrary(marylandedu)"
+    "section": "4.2 Who else is using R in Baltimore?",
+    "text": "4.2 Who else is using R in Baltimore?\n\n\nWithin Baltimore City government, R is used routinely by data and research staff, the Baltimore City Department of Finance, the Mayor’s Office of Recovery Programs, Mayor’s Office of Performance and Innovation, and the Baltimore City Public School System."
   },
   {
-    "objectID": "index.html#who-else-is-using-r",
-    "href": "index.html#who-else-is-using-r",
+    "objectID": "index.html#who-else-is-using-r-for-planning",
+    "href": "index.html#who-else-is-using-r-for-planning",
     "title": "Using R as your GIS",
-    "section": "3.7 Who else is using R?",
-    "text": "3.7 Who else is using R?\n\nChicago Metropolitan Agency for Planning (e.g. using cmapgeo and other tools for internal analysis/visualization),\nthe California Integrated Transit Project (e.g. using tidytransit for standardizing transit data),\nUrban Institute’s Education Data API (e.g. using an R package to support research data access),\nand DataHaven (e.g. using tidycensus for reproducible reports like the Connecticut Town Equity Reports)"
+    "section": "4.3 Who else is using R for planning?",
+    "text": "4.3 Who else is using R for planning?\n\nthe California Integrated Transit Project (e.g. using tidytransit for standardizing transit data),\nand DataHaven (e.g. using tidycensus for reproducible reports like the Connecticut Town Equity Reports)\n\n\n\nR is being used by public sector workers to do spatial data analysis at USGS, Wisconsin Department of Transportation, the Chicago Metropolitan Agency for Planning, and the Montgomery County Department of Planning—just to name a few."
   },
   {
     "objectID": "index.html#books-on-programming-with-r",
     "href": "index.html#books-on-programming-with-r",
     "title": "Using R as your GIS",
-    "section": "4.1 Books on programming with R",
-    "text": "4.1 Books on programming with R\n\nR for Data Science by Hadley Wickham “will teach you how to do data science with R: You’ll learn how to get your data into R, get it into the most useful structure, transform it and visualize.”\nHands on Programming with R by Garrett Grolemund, is “an introduction to R as a programming language and is a great place to start if R is your first programming language*.”\nAdvanced R by Hadley Wickham “dives into the details of R the programming language; it’s great place to start if you have existing programming experience”"
+    "section": "5.1 Books on programming with R",
+    "text": "5.1 Books on programming with R\n\nR for Data Science by Hadley Wickham “will teach you how to do data science with R: You’ll learn how to get your data into R, get it into the most useful structure, transform it and visualize.”\nHands on Programming with R by Garrett Grolemund, is “an introduction to R as a programming language and is a great place to start if R is your first programming language.”\nAdvanced R by Hadley Wickham “dives into the details of R the programming language; it’s great place to start if you have existing programming experience”"
   },
   {
     "objectID": "index.html#books-on-spatial-data-analysis-with-r",
     "href": "index.html#books-on-spatial-data-analysis-with-r",
     "title": "Using R as your GIS",
-    "section": "4.2 Books on spatial data analysis with R",
-    "text": "4.2 Books on spatial data analysis with R"
+    "section": "5.2 Books on spatial data analysis with R",
+    "text": "5.2 Books on spatial data analysis with R\n\nGeocomputation with R by Robin Lovelace, Jakub Nowosad, and Jannes Muenchow is a book for people who want to analyze, visualize and model geographic data with open source software.\nSpatial Data Science With Applications in R by Edzer Pebesma and Roger Bivand introduces fundamental aspects of spatial data that every data scientist should know before they start working with spatial data."
   }
 ]

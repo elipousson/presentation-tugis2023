@@ -1,5 +1,6 @@
 ---
 title: "Using R as your GIS"
+subtitle: "Applying R to community planning and working with spatial data"
 format:
   clean-revealjs:
     echo: true
@@ -12,8 +13,7 @@ format:
     slide-number: true
     number-sections: true
     number-depth: 2
-filters: 
-  - reveal-header
+    sc-sb-title: true
 author:
   - name: Eli Pousson
     email: eli.pousson@baltimorecity.gov
@@ -32,26 +32,53 @@ library(mapboxapi)
 library(tidygeocoder)
 library(tidycensus)
 library(getACS)
+library(gt)
 library(osmdata)
 options("tigris_use_cache" = TRUE)
 ```
 
-# Welcome
+# Welcome 👋
 
-------------------------------------------------------------------------
+## What are we talking about?
 
-------------------------------------------------------------------------
+-   A Short Introduction to R
+-   Using R at the Department of Planning
+-   Why use R as your GIS?
+
+Find the presentation at [elipousson.github.io/presentation-tugis2023/](https://elipousson.github.io/presentation-tugis2023/) or the code at [github.com/elipousson/presentation-tugis2023](https://github.com/elipousson/presentation-tugis2023)
 
 ::: notes
 Good afternoon.
 
-My name is Eli Pousson. I am a planner with the Baltimore City Department of Planning---one of two planners supporting the INSPIRE program. I also teach a course for the University of Maryland Baltimore County new GIS certificate program and I am an enthusiastic R developer and an advocate for open-source tools and open data.
+My name is Eli Pousson. I am a planner with the Baltimore City Department of Planning---one of two planners supporting the city's INSPIRE program. I also teach a course for the University of Maryland Baltimore County's GIS certificate program and I am an enthusiastic R developer and an advocate for open-source tools and open data.
 
-Today, I'll be talking about how I am using R as my GIS---my primary tool for reading, writing, analyzing, and visualizing both spatial data and data of all kinds.
+Maybe I'd even say that I'm a *really* enthusiastic R developer. I was first introduced to the programming language about 4 years ago and I've developed around two dozen packages over the past three years. This is the work I'll be talking about today.
 
-Quick show of hands: how many people have heard of the R programming language? OK. Now, how many of you have used R for working with spatial data?
+I use R as my GIS---my main tool for reading, writing, analyzing, and visualizing both spatial data and truly data of all kinds.
 
-Great. So to make sure we keep everybody on board, I'm going to start with a short introduction to R, working with spatial data in R, and why you might want to use R for your spatial data work.
+OK. A quick show of hands: how many people have heard of the R programming language before today? Great. Now, how many of you have used R for working with spatial data?
+
+Our first part may be a bit of review for anyone with more experience but, if you want to go far, go together, so I'm going to start with a short introduction to R and working with spatial data in R.
+
+I'll then share a few examples of the custom packages and workflows that I'm using to support my own work as a planner at the Department of Planning.
+
+I'll then wrap up with making the case for why I think you may also want to try using R as your GIS highlight a few other exciting projects that are using this tool.
+:::
+
+## Where am I coming from?
+
+A few things about me:
+
+-   I work as a community planner at the Baltimore City Department of Planning
+-   I started learning R as a student at the John Hopkins University School of Public Health in 2019
+-   I started developing R packages while working at the Neighborhood Design Center in 2020
+-   I teach using a course on spatial data and R for the UMBC GIS Certificate program
+
+::: notes
+-   Planner at the Baltimore City Department of Planning previously worked for the Neighborhood Design Center and a non-profit Baltimore Heritage
+-   Teacher with the University of Maryland Baltimore County GIS certificate program
+-   Picked up R starting in 2019 while studying public health at Johns Hopkins Bloomberg School of Public Health
+-   Started making my first R package in October 2020 (and have developed over 24 packages in the past 3 years)
 
 Then, I'll share a few quick examples of how we're working with:
 
@@ -61,7 +88,7 @@ Then, I'll share a few quick examples of how we're working with:
 
 ...using R and a wide variety of open-source packages and API services.
 
-Finally, I'll wrap up by sharing a few examples of how R is being used for community planning in other places around the state and country. Hopefully, by the end you'll share some of my excitement about the potential
+Finally, I'll wrap up by sharing a few examples of how R is being used for community planning in other places around the state and country.
 :::
 
 # A Short Introduction to R
@@ -70,13 +97,13 @@ Finally, I'll wrap up by sharing a few examples of how R is being used for commu
 
 ::: columns
 ::: {.column width="70%"}
-R is a programming language best known for use as a *statistical* programming language often used in data science and research.
+R is best known for as a _statistical_ programming language often used in data science and research.
 
-Like Python or C++, R is an object-oriented, functional programming language where the base set of features can be extended through open-source packages.
+Like Python or C++, R is an **object-oriented, functional programming language** where the base set of features can be extended through open-source packages or libraries.
 :::
 
 ::: {.column width="30%"}
-![[Courtesy Wikipedia](https://commons.wikimedia.org/wiki/File:R_logo.svg)](images/R_logo.png)
+![](images/R_logo.png)
 :::
 :::
 
@@ -86,9 +113,23 @@ Like Python or C++, R is an object-oriented, functional programming language whe
 From [BasicBasics 2](https://rladiessydney.org/courses/ryouwithme/01-basicbasics-2/) (R-Ladies Sydney)
 :::
 
-### R isn't new
+### R has been around a while 📜
 
-![[Digital Equipment Corporation VAX 11/780 mainframe computer, Maynard - Digital Commonwealth](https://www.digitalcommonwealth.org/search/commonwealth:sn00b088z)](images/14085834343_552d1d3197_h.jpg)
+::: columns
+::: {.column width="40%"}
+R turns 30 years old this month 🎂
+
+R is based an S---a language created at Bell Labs in 1976 to support exploratory data analysis.
+:::
+
+::: {.column width="60%"}
+![Digital Equipment Corporation VAX 11/780 mainframe computer. Source: Boston Public Library [Copyright Spencer Grant](https://www.digitalcommonwealth.org/search/commonwealth:sn00b088z)](images/14085834343_552d1d3197_h.jpg)
+:::
+:::
+
+::: footer
+S ran on VAX 11/780 computers like the mainframe above.
+:::
 
 ::: notes
 R turns 30 years old this month and is based on a language called S first created at Bell Labs in 1976. S ran on machines like this one.
@@ -98,79 +139,106 @@ R has included support for a variety of spatial data analysis tasks since 2000.
 The sf package (short for simple features) was first published to CRAN in 2016.
 :::
 
-### R is growing in popularity
-
-```{r}
-#| echo: false
-#| eval: true 
-#| file: R/packageRank-plot.R
-```
-
-::: notes
-Over the past five years, average number of monthly downloads for sf, the most popular package for working with spatial data in R has grown from just 1,300 in June 2018 to over 58,000 in June 2023.
-:::
-
-### R is a little complicated
+### R doesn't use a graphical interface 🤖
 
 ![](images/rstudio-ide-screenshot.png)
 
 ::: footer
-Unlike a desktop GIS application, you use it by writing code in a text file---not clicking around a graphical interface. I use an Integrated Development Environment or IDE known as RStudio to write R scripts, develop R packages, and even create presentations like this one.
+[RStudio](https://posit.co/products/open-source/rstudio/) is the most popular IDE for R but some people use [VS Code](https://code.visualstudio.com/docs/languages/r), [radian](https://github.com/randy3k/radian), or a simple text editor.
 :::
 
-#### R is powerful and versatile
+::: notes
+Unlike a desktop GIS application, you use it by writing code in a text file---not clicking around a graphical interface. I use an Integrated Development Environment or IDE known as RStudio to write R scripts, develop R packages, and even create presentations like this one.
 
-![](https://user-images.githubusercontent.com/520851/34887433-ce1d130e-f7c6-11e7-83fc-d60ad4fae6bd.gif)
+> With the advent of 'modern' GIS software, most people want to point and click their way through life. That's good, but there is a tremendous amount of flexibility and power waiting for you with the command line.
+
+Gary E. Sherman, founder of the Quantum GIS project, explains in Desktop GIS: Mapping the Planet with Open Source Tools
+:::
+
+### R is growing in popularity 📈
+
+```{r}
+#| echo: false
+#| eval: true
+#| file: R/packageRank-plot.R
+```
+
+### R is growing in popularity 📈
+
+The average number of monthly downloads for `{sf}` (the most popular package for working with spatial data in R) has grown from just 1,300 in June 2018 to **over 58,000 in June 2023**.
 
 ::: notes
--   **It is versatile.** Users can add features by creating a package that can be published to CRAN (a large, long-running institutional repository) or on GitHub. There are currently over 19,800 packages on CRAN and thousands more from other online sources.
+Over the past five years, average number of monthly downloads for sf, the most popular package for working with spatial data in R has grown from just 1,300 in June 2018 to over 58,000 in June 2023.
 
-Packages can include:
+It helps that R and RStudio are both free, most packages are open-source, and there are ample free online books and trainings.
+:::
 
--   Packages for sharing data and documentation, like [rnaturaleath](https://docs.ropensci.org/rnaturalearth/)
--   Packages for using an API, like [mapboxapi](https://walker-data.com/mapboxapi/) for accessing everything from isochrones to tile services from the Mapbox API, or web services, like [tidygeocoder](https://jessecambon.github.io/tidygeocoder/) for a unified high-level interface to over a dozen free geocoding services.
--   Packages for working with a special type of data
+### R is flexible 🛠️
 
-A few packages to highlight this versatility:
+::: columns
+::: {.column width="60%"}
+There can't be packages for everything---but sometimes it feels that way.
 
-Packages for accessing APIs
+Packages let you work with everything from Microsoft Word documents to 3D renderings of digital elevation data to Google Drive to Google Earth Engine.
+:::
 
--   [osmdata](https://docs.ropensci.org/osmdata/) for importing OpenStreetMap data as simple feature objects
--   esri2sf for downloading ArcGIS FeatureLayers as simple feature data
--   tidycensus for downloading decennial Census or American Community Survey data from the U.S. Census Bureau API
+::: {.column width="40%"}
+![Created with `{rayshader}`](https://www.rayshader.com/reference/figures/smallhobart.gif){fig-alt="Animated loop showing a mountain with lighting from different directions."}
+:::
+:::
+
+::: footer
+If a package doesn't exist already, there are also packages like `{usethis}` or `{devtools}` that help _you_ build it.
 :::
 
 ## How does R work with spatial data?
 
-To get R working as our GIS, we need some packages.
+::: columns
+::: {.column width="65%"}
+The `{sf}` package, first published in 2016, is the most popular R package for spatial data.
 
-Packages are quick to install and load:
+::: {style="font-size: 80%;"}
+Extension packages include:
 
-```{r}
-#| eval: false
-install.packages(c("sf", "ggplot2", "dplyr"))
+-   [lwgeom](https://github.com/r-spatial/lwgeom/) for selected liblwgeom/PostGIS functions
+-   [stars](https://github.com/r-spatial/stars/) for raster data, and raster or vector data cubes (spatial time series)
+-   [sfnetworks](https://luukvdmeer.github.io/sfnetworks/) for geospatial network data
+:::
+:::
 
-library(sf)
-library(ggplot2)
-library(dplyr)
-```
+::: {.column width="35%"}
+![](https://user-images.githubusercontent.com/520851/34887433-ce1d130e-f7c6-11e7-83fc-d60ad4fae6bd.gif){fig-alt="sf package logo" fig-align="center"}
 
-### Using the sf package
+![](https://luukvdmeer.github.io/sfnetworks/reference/figures/logo.png){fig-alt="sfnetworks package logo" fig-align="center" width="200"}
+:::
+:::
 
-Using the `{sf}` package, you can read data into R from a local file, URL, or database:
+### `{sf}` is built on open source libraries
 
-```{r}
-#| name: st_read
-md <- st_read("files/md_counties.gpkg")
-```
+::: columns
+::: {.column width="65%"}
+Like QGIS, `{sf}` rests on a foundation of open source libraries:
 
-------------------------------------------------------------------------
+::: {style="font-size: 80%;"}
+-   [SQLite](https://www.sqlite.org/index.html) (a C library that implements a SQL database engine),
+-   [GDAL](https://gdal.org/index.html) (the Geospatial Data Abstraction Library),
+-   [PROJ](https://proj.org/en/9.2/index.html) (a coordinate transformation software library),
+-   and [GEOS](https://libgeos.org/) (a C/C++ library for computational geometry).
+:::
+:::
+
+::: {.column width="35%"}
+![](images/GDALLogoColor.svg){fig-alt="GDAL logo"}
+:::
+:::
+
+### `sf` objects are data frames with "sticky" geometry
 
 ::: columns
 ::: {.column width="40%"}
-Spatial data is structured based on the simple feature standard.
+`sf` objects are an implementation of the simple feature standard.
 
-The trick is that the feature geometry is "sticky" and stays attached to your attribute data through a wide variety of transformations.
+Attribute data is attached to a "sticky" geometry column.
 :::
 
 ::: {.column width="60%"}
@@ -178,9 +246,50 @@ The trick is that the feature geometry is "sticky" and stays attached to your at
 :::
 :::
 
+## Take a look at `{sf}` in action
+
+Packages are simple to install:
+
+```{r}
+#| eval: false
+install.packages(c("sf", "ggplot2", "dplyr"))
+```
+
+And to load:
+
+```{r}
+#| eval: false
+library(sf)
+library(ggplot2)
+library(dplyr)
+```
+
 ------------------------------------------------------------------------
 
-You can drop the geometry and turn a data frame is just like a spreadsheet:
+Using the `{sf}` package, you can use `st_read()` to read data into R from a local file, URL, or database:
+
+```{r}
+#| name: st_read
+#| message: true
+md <- st_read("files/md_counties.gpkg")
+```
+
+------------------------------------------------------------------------
+
+You can take a look at the geometry column using `st_geometry()`:
+
+```{r}
+#| message: true
+st_geometry(md)
+```
+
+::: footer
+The geometry for a `sf` data frame is known as a simple feature collection (`sfc`) object. A `sfc` object is made up of `sfg` objects.
+:::
+
+------------------------------------------------------------------------
+
+Or, if you drop the geometry, a `sf` object is just like a spreadsheet:
 
 ```{r}
 st_drop_geometry(md)
@@ -188,20 +297,15 @@ st_drop_geometry(md)
 
 ------------------------------------------------------------------------
 
-Or take a look at that "sticky" geometry column to see the coordinate reference system and geometry type:
+You can plot data with R's built-in `plot()` function:
 
 ```{r}
-#| message: true
-st_geometry(md)
+plot(md[, 2])
 ```
 
-------------------------------------------------------------------------
-
-You can plot data with R's built-in `plot()` function (the square brackets are a quick way to subset rows and columns):
-
-```{r}
-plot(md[ , 2])
-```
+::: footer
+Square brackets (`[]`) are an easy way to subset rows and columns.
+:::
 
 ------------------------------------------------------------------------
 
@@ -212,47 +316,46 @@ You can summarize data using the `summary()` function:
 summary(md)
 ```
 
+::: footer
+The `sf` package adds S3 methods for the base `plot()` and `summary()` functions. Learn more about [S3 methods in *Advanced R*](https://adv-r.hadley.nz/s3.html).
+:::
+
 ### Using `{sf}` with tidyverse packages
 
 ::: columns
-::: {.column width="60%"}
-The [tidyverse](https://www.tidyverse.org/) family of R packages developed by Posit---the company formerly known as RStudio that supports the IDE with the same name.
+::: {.column width="65%"}
+The [tidyverse](https://www.tidyverse.org/) family of R packages developed by [Posit](https://posit.co) (formerly known as RStudio) including:
 
-Popular tidyverse packages include:
-
+::: {style="font-size: 80%;"}
 -   [ggplot2](https://ggplot2.tidyverse.org/) for making graphics and data visualizations from bar charts to box plots to maps
 -   [dplyr](https://dplyr.tidyverse.org/) for common data manipulation challenges, such as filtering, re-arranging, or summarizing data
 -   [readr](https://readr.tidyverse.org/) for reading rectangular data in a fast and friendly way
-
-sf works well with tidyverse packages and I use them extensively in my own work.
+:::
 :::
 
-::: {.column width="30%"}
-![](images/ggplot2-exploratory-data-visualization_allisonhorst.png) <!-- ![](images/r-for-data-science-cover.png) -->
+::: {.column width="35%"}
+![](images/tidyverse-packages.png){fig-alt="Tidyverse packages"}
 :::
 :::
 
 ::: notes
 Notably, the development of these packages is supported by Posit---but they are fully open-source and include contributions from quite literally *hundreds* of individual developers (291 for ggplot2 and 260 for dplyr).
+
+sf works well with tidyverse packages and I use them extensively in my own work.
 :::
 
 ------------------------------------------------------------------------
 
-For example, we can use `geom_sf()` from `{ggplot2}` to make a simple map:
+tidyverse packages work well with `{sf}`. For example, we can use `geom_sf()` from `{ggplot2}` to make a simple map:
 
 ```{r}
 #| name: geom_sf
 #| output-location: slide
-ggplot(data = md) +
-  geom_sf() +
-  theme_minimal()
-```
-
-```{r}
-#| echo: false
 md_map <- ggplot(data = md) +
   geom_sf() +
-  theme_void()
+  theme_minimal()
+
+md_map
 ```
 
 ------------------------------------------------------------------------
@@ -266,72 +369,63 @@ glimpse(md)
 
 ------------------------------------------------------------------------
 
-### `{sf}` is built on an open-source foundation
+#### Using `{sf}` for spatial transformations
 
 ::: columns
-::: {.column width="65%"}
-Like QGIS, sf rests on a foundation of other open-source tools, especially:
-
--   [GDAL](https://gdal.org/index.html) (the Geospatial Data Abstraction Library),
--   [PROJ](https://proj.org/en/9.2/index.html) (a coordinate transformation software library),
--   and [GEOS](https://libgeos.org/) (a C/C++ library for computational geometry).
-:::
-
-::: {.column width="35%"}
-![Courtesy [OSGEO](https://gdal.org/index.html)](images/GDALLogoColor.svg)
-:::
-:::
-
-------------------------------------------------------------------------
-
-#### Using `{sf}` with for spatial transformations
-
+::: {.column width="60%"}
 `{sf}` includes a range of spatial transformation functions with names matching the spatial functions of [PostGIS](https://postgis.net/).
+
+To show how this works, we can get the center of Baltimore City, buffer by 25 miles, and filter intersecting counties.
+:::
+
+::: {.column width="40%"}
+![ST_intersects relationships with different geometry types](images/st_intersects_postgis-intro.png)
+:::
+:::
 
 ::: notes
 that you might usually do [geoprocessing tools from ArcGIS Pro](https://pro.arcgis.com/en/pro-app/latest/tool-reference/main/arcgis-pro-tool-reference.htm) or the [QGIS Processing Toolbox](https://docs.qgis.org/3.28/en/docs/user_manual/processing/toolbox.html) at included with the `{sf}`, `{lwgeom}`, or another R package.
+
+-   Get a center point for Baltimore City with `st_centroid()`
+-   Apply a 25 mile buffer using `st_buffer()` and `as_units()` from the `{units}` package
+-   Filter our original data on Maryland counties with `st_filter()`
+-   Now we can combine our earlier map with the transformed data
 :::
 
-#### Using `{sf}` with for spatial transformations {auto-animate="true"}
-
-Get a center point for Baltimore City with `st_centroid()`:
+#### Using `{sf}` for spatial transformations {auto-animate="true"}
 
 ```{r}
-#| output-location: slide
 balt_center <- st_centroid(md[3, ])
+
+balt_center
 ```
 
-#### Using `{sf}` with for spatial transformations {auto-animate="true"}
-
-Apply a 25 mile buffer using `st_buffer()` and `as_units()` from the `{units}` package:
+#### Using `{sf}` for spatial transformations {auto-animate="true"}
 
 ```{r}
-#| output-location: slide
 balt_center <- st_centroid(md[3, ])
+
 balt_area <- st_buffer(balt_center, dist = as_units(25, "mi"))
+
+balt_area
 ```
 
-#### Using `{sf}` with for spatial transformations {auto-animate="true"}
-
-Filter our original data on Maryland counties with `st_filter()`:
+#### Using `{sf}` for spatial transformations {auto-animate="true"}
 
 ```{r}
-#| output-location: slide
 balt_center <- st_centroid(md[3, ])
+
 balt_area <- st_buffer(balt_center, dist = as_units(25, "mi"))
-balt_area_counties <- st_filter(md, balt_area, .predicate = st_intersects)
-```
 
-#### Using `{sf}` with for spatial transformations {auto-animate="true"}
-
-Now we can combine our earlier map with the transformed data:
-
-```{r}
-#| output-location: slide
-balt_center <- st_centroid(md[3, ])
-balt_area <- st_buffer(balt_center, dist = as_units(25, "mi"))
 balt_area_counties <- st_filter(md, balt_area, .predicate = st_intersects)
 
+balt_area_counties
+```
+
+#### Using `{sf}` for spatial transformations
+
+```{r}
+#| output-location: slide
 ggplot(data = md) +
   geom_sf() +
   geom_sf(data = balt_area_counties, fill = "darkorange", alpha = 0.4) +
@@ -339,65 +433,170 @@ ggplot(data = md) +
   theme_void()
 ```
 
+::: notes
+Visual checks remain an important part of a workflow even when using a non-graphical interface. Map the data to see the results.
+:::
+
+------------------------------------------------------------------------
+
+#### Using `{dplyr}` for attribute transformations
+
+Changes to attribute data with functions like `summarise()` also change geometry:
+
+```{r}
+md_AWATER_summary <- md |> 
+  mutate(
+    perc_AWATER = round(AWATER / (ALAND + AWATER), digits = 2),
+    category = case_when(
+      perc_AWATER > 0.4 ~ "A lot of water",
+      perc_AWATER > 0.1 ~ "Some water",
+      .default = "Not much water"
+    ),
+    category = factor(category, c("A lot of water", "Some water", "Not much water"))
+  ) |> 
+  group_by(category) |> 
+  summarise(
+    mean_perc_AWATER = mean(perc_AWATER)
+  ) |> 
+  arrange(category)
+
+glimpse(md_AWATER_summary)
+```
+
 ### Additional packages for spatial data
+
+`{sf}` is not the only package for working with spatial data! Developers are both extending `{sf}` and using alternate approaches to support:
+
+-   Mapping and visualization
+-   Downloading data from different sources
+-   Integration with other applications
+-   Changing the geometry or attributes of data
+
+#### Interactive mapping with `mapview()`
 
 You can view data interactively with `{mapview}` and `{leaflet}` (built on top of the [Leaflet Javascript library](https://leafletjs.com/)):
 
 ```{r}
 #| name: mapview
-mapview(md)
+library(mapview)
+
+mapview(md_AWATER_summary, zcol = "category")
 ```
 
-------------------------------------------------------------------------
+::: footer
+The [`{mapedit}`](https://github.com/r-spatial/mapedit) package extends `{mapview}` to support interactive feature editing and selection. [`{rdeck}`](https://github.com/qfes/rdeck/) is another great option for interactive maps.
+:::
 
-You can download data from OpenStreetMap with the `{osmdata}` package:
+#### Downloading data from OpenStreetMap
+
+You can download data from OpenStreetMap by using the `{osmdata}` package to access the [Overpass API](https://wiki.openstreetmap.org/wiki/Overpass_API):
 
 ```{r}
-#| output-location: slide
-balt_area_query <- balt_area |> 
-  st_transform(4326) |> 
-  st_bbox() |> 
-  opq() |> 
-  add_osm_feature(
-    key = "amenity",
-    value = "university"
-    )
+#| eval: false
+library(osmdata)
 
-balt_area_univ <- osmdata_sf(balt_area_query)
+balt_area_schools_query <- balt_area |>
+  st_transform(4326) |>
+  st_bbox() |>
+  opq() |>
+  add_osm_features(
+    features = c(
+      "amenity" = "university",
+      "amenity" = "college"
+    )
+  )
+
+balt_area_schools <- osmdata_sf(balt_area_schools_query)
 ```
 
----
+::: footer
+The `|>` or `%>%` symbol is known as a "pipe" and allows you to chain together functions where the output from one becomes the first input for the next.
+:::
 
 ```{r}
 #| echo: false
-# 
-```
-
-```{r}
-#| output-location: slide
-mapview(balt_area_univ[["osm_multipolygons"]])
+balt_area_schools <- readr::read_rds("files/balt_area_schools.rds")
 ```
 
 ------------------------------------------------------------------------
 
-If your desktop GIS does something that you don't know how to do in R, you can even interface directly using ESRI's official [arcgisbinding package](https://github.com/R-ArcGIS/r-bridge) (supported by [the r-bridge library](https://r.esri.com/)) or the [qgisprocess](https://r-spatial.github.io/qgisprocess/) package.
+The `{osmdata}` package returns a list with the original query and the different geometry types extracted from OpenStreetMap:
 
+```{r}
+str(balt_area_schools)
+```
+
+::: footer
+`str()` displays the structure of any R object.
+:::
+
+------------------------------------------------------------------------
+
+```{r}
+#| echo: false
+ggplot() +
+  geom_sf(data = balt_area_counties, fill = "gray80", color = "black") +
+  geom_sf(data = balt_area_schools[["osm_multipolygons"]], fill = "purple1", color = NA) +
+  geom_sf(data = balt_area_schools[["osm_polygons"]], fill = "purple4", color = NA) +
+  geom_sf(data = balt_area, fill = NA, color = "orange", linetype = "dashed") +
+  theme_void()
+```
+
+::: footer
+A specialized package like `{osmdata}` helps you work with the an unfamiliar API or data format with confidence!
+:::
+
+#### Integration with ArcGIS Pro or QGIS
+
+::: columns
+::: {.column width="65%"}
+If your desktop GIS does something that you don't know how to do in R, you can even interface directly using:
+
+-   [arcgisbinding package](https://github.com/R-ArcGIS/r-bridge) (supported by [the r-bridge library](https://r.esri.com/))
+-   or the [qgisprocess](https://r-spatial.github.io/qgisprocess/) package.
+
+You can also use the [`{esri2sf}` package](https://github.com/elipousson/esri2sf) to download FeatureLayer data and metadata.
+:::
+
+::: {.column width="35%"}
 ![](images/qgis-process.png)
+:::
+:::
 
 # Using R at the Department of Planning
 
 ## About the INSPIRE Program
 
+::: columns
+::: {.column width="65%"}
+INSPIRE stands for *Investing in Neighborhoods and Schools to Promote Improvement, Revitalization, and Excellence*.
+
+The Department of Planning is working with communities in a quarter-mile area (about a five minute walk) around each 21st Century School to create a plan that can guide new private and public investments in each area.
+:::
+
+::: {.column width="35%"}
+![](images/2016_inspire-logo.jpeg)
+:::
+:::
+
+::: notes
 -   24 small area plans for a 5-10 minute area around 28 new school buildings
 -   Program launched in 2017 and 13 plans have been adopted
 -   I am a planner with a background in historic preservation and public health---not a GIS analyst or researcher
+:::
 
-## How am I using R for INSPIRE?
+## Using R for the INSPIRE Program
 
+## What do I do with R?
+
+I use R for a little bit of everything:
+
+-   Process survey or observation data collected in the "field"
+-   Summarize and combine data from spatial and non-spatial data sources
 -   Create maps and tables for presentations and hand-outs (often in combination with Adobe Illustrator or Adobe InDesign)
--   Summarize and combine data from city, state, and other sources
--   Work with documents (see the `{officer}` package for more on R and Microsoft Word)
--   Build and maintain packages with processed data and custom data access functions
+-   Extract data from or add content to documents (see the `{officer}` and `{officerExtras}` package)
+
+This work relies on a set of custom packages `{mapbaltimore}`, `{bcpss}`, and `{mapmaryland}` with city and state-specific data and data access functions.
 
 ::: notes
 For brevity, these example rely of a number of custom packages that I've developed and published on GitHub. If we had more time today, I'd walk you through the code in detail and demonstrate the transformations and
@@ -405,86 +604,263 @@ For brevity, these example rely of a number of custom packages that I've develop
 These examples also don't highlight the spatial features of R to their fullest extent. Buffers, spatial filters, and spatial joins cover a large share of how I work with spatal data. More often, my challenges center on the underlying attribute data: how can it be clearly standardized, visualized, and presented in an organized and accessible format.
 :::
 
----
+### Using the `{mapbaltimore}` package
 
-![Distribution of student addresses within a 10 walking distance of Commodore John Rodgers Elementary/Middle School](images/2022-12-14_Commodore John Rodgers EMS INSPIRE Plan_ Primary Walking Routes.png)
+:::: {.columns}
 
----
+::: {.column width='40%'}
+![](images/mapbaltimore-logo.png)
+:::
 
-![Poster sized map showing 10 minute walking distance to collect feedback from school community members at Commodore John Rodgers Elementary/Middle School](images/2023-01-12_com-john-rodgers-ems_outreach.jpeg)
+::: {.column width='60%'}
+Loading the `{mapbaltimore}` package gives you access to:
 
----
+- Neighborhoods
+- Administrative and political boundaries
+- INSPIRE plan area boundaries and much more
+:::
 
-![Contact sheet with photos from a field survey of Harford Road sidewalk conditions in the Coldsteam Homestead Montebello neighborhood](images/2023_05-11_harford-road_sidewalk-condition-survey_pg_01.jpg)
+::::
 
----
+### Using the `{mapbaltimore}` package
 
+`inspire_plans` is one of dozens of datasets that are available after the package is loaded:
 
-------------------------------------------------------------------------
+```{r}
+# pak::pkg_install("elipousson/mapbaltimore")
+library(mapbaltimore)
 
-## Where are these planning areas?
+inspire_plans <- st_transform(inspire_plans, crs = 3857)
+
+area <- inspire_plans[5, ]
+```
+
+::: notes
+I could get data from a FeatureLayer using `{esr2sf}` but I more often use `{mapbaltimore}`—a data package I created to organize spatial data for Baltimore City. The package includes the boundaries for our INSPIRE Planning areas:
+:::
+
+### Using the `{mapbaltimore}` package
+
+The package also has "helper" functions like `get_area_streets()`:
+
+```{r}
+area_streets <- get_area_streets(area)
+
+area_streets <- st_transform(area_streets, crs = 3857)
+
+area_streets
+```
+
+### Using the `{mapbaltimore}` package
+
+![Check out [my GitHub profile](https://github.com/elipousson/) for information on these packages.](images/github-elipousson-screenshot.png)
+
+## Using R for the Commodore John Rodgers EMS INSPIRE Plan
+
+:::: {.columns}
+
+::: {.column width='40%'}
+INSPIRE supports improvements along school walking routes but we first need to figure out:
+
+- Where are safety improvements needed?
+- What routes do students take to school?
+:::
+
+::: {.column width='60%'}
+![](images/2022-11-16_commodore-john-rodgers-ems.jpeg)
+:::
+
+::::
+
+#### Where are safety improvements needed?
+
+The `{mapmaryland}` package to download and format data from the [state open data portal](https://opendata.maryland.gov/) for vehicle crashes:
+
+```{r}
+#| eval: false
+library(mapmaryland)
+
+area_crashes <- get_md_crash_data(area)
+
+area_crashes <- format_md_crash_data(area_crashes)
+```
+
+::: footer
+`get_md_crash_data()` is built using the `{RSocrata}` package created and maintained by the City of Chicago.
+:::
+
+#### Where are safety improvements needed?
+
+The `dplyr::filter()` function limits data to injury crashes:
 
 ```{r}
 #| echo: false
-#| output-location: slide
-inspire_plans <- sf::read_sf("files/inspire_plans.gpkg")
-mapview(inspire_plans)
+#| eval: false
+readr::write_csv(area_crashes, here::here("files/area_crashes.csv"))
 ```
-
-```{r}
-#| echo: false
-
-area <- inspire_plans[13, ]
-area <- st_buffer(area, dist = as_units(0.5, "mi"))
-```
-
-
-## Mapping Crash Data
-
-This first example,
 
 ```{r}
 #| echo: false
 #| eval: true
-#| file: R/baltimorecrashes-example.R
+area_crashes <- readr::read_csv(here::here("files/area_crashes.csv"))
 ```
 
-## Making Tables with U.S. Census Data
+```{r}
+area_crashes <- st_as_sf(area_crashes, coords = c("longitude", "latitude"))
+st_crs(area_crashes) <- 4326
 
-The `{tidycensus}` package allows us to skip the Census website and download directly from the Census API:
+injury_crashes <- filter(area_crashes, report_type == "Injury Crash")
+
+injury_crashes
+```
+
+#### Where are safety improvements needed?
+
+Mapping pedestrian injury crashes help identify priority intersections:
 
 ```{r}
-housing_cost_data <- get_acs(
+#| output-location: slide
+ggplot(data = injury_crashes) +
+  geom_sf(data = area, fill = NA) +
+  geom_sf(data = area_streets) +
+  geom_sf(aes(color = ped_injury), alpha = 0.75, size = 2) +
+  scale_color_viridis_d() +
+  theme_void()
+```
+
+#### Where are safety improvements needed?
+
+:::: {.columns}
+
+::: {.column width='40%'}
+We included crash data on a packet of printed maps helped we used during a walk around the neighborhood to identify priority locations.
+:::
+
+::: {.column width='60%'}
+![Eli Pousson and Imani Jasper (Eastern District Planner)](images/5E8BD00E-3466-4C1D-8F56-428A7EEDE725_1_105_c.jpeg)
+:::
+
+::::
+
+#### What routes do students take to school?
+
+![Data from BCPSS on student addresses supported the creation of maps showing the distribtion of student addresses.](images/2022-12-14_cjrems-walking-route-map.png)
+
+:::footer
+The `{mapboxapi}` package provided the 15-minute walking distance isochrones and the custom basemap in this `{ggplot2}` map.
+:::
+
+#### What are the routes that students take to school?
+
+![Poster sized map showing 10 minute walking distance to collect feedback from school community members at Commodore John Rodgers Elementary/Middle School](images/2023-01-12_com-john-rodgers-ems_outreach.jpeg)
+
+### Using R for the John Ruhrah EMS INSPIRE Plan
+
+::: columns
+::: {.column width="40%"}
+![John Ruhrah Elementary/Middle School INSPIRE Plan](images/2023-06-08_john-ruhrah-ems_inspire-plan_cover.jpg)
+:::
+
+::: {.column width="60%"}
+The INSPIRE program is creating a community plan for each INSPIRE area.
+
+For each plan, we need to know: what are the area demographics and housing conditions?
+
+:::
+:::
+
+::: notes
+John Ruhrah EMS
+
+-   Plan adopted this past June
+-   Numerous static maps and plots created wholly in R or created in R and customized with Adobe Illustrator
+:::
+
+#### What are the area demographics and housing conditions?
+
+How do you know who lives in the planning area?
+
+Here are the key steps:
+
+-   Download American Community Survey (ACS) data from the U.S. Census Bureau
+-   Interpolate tract-level geometry for a planning area
+-   Combine planning area ACS data with county- and metro area-level data
+-   Create a formatted table of ACS data
+
+------------------------------------------------------------------------
+
+To start, we can get the area from the `inspire_plans` data (and use `mutate()` add a new column we'll need shortly):
+
+```{r}
+#| echo: true
+area <- inspire_plans[13, ]
+area <- mutate(area, NAME = plan_name_short)
+
+area
+```
+
+------------------------------------------------------------------------
+
+We can use `{tidycensus}` package download American Community Survey data directly from the Census API:
+
+```{r}
+acs_data <- get_acs(
   geography = "tract",
   table = "B25105",
   county = "Baltimore city",
   state = "MD",
+  year = 2021,
+  survey = "acs5",
   geometry = TRUE
 )
 
-housing_cost_data <- st_transform(housing_cost_data, crs = 3857)
+acs_data <- st_transform(acs_data, 3857)
+
+acs_data
 ```
 
 ------------------------------------------------------------------------
 
-Then filter the data to our planning area:
+We can use `st_filter()` to filter the data to our planning area:
 
 ```{r}
-area_housing_cost_data <- st_filter(housing_cost_data, area)
-
-mapview(list(area, area_housing_cost_data))
+mapview(list(area, st_filter(acs_data, area)))
 ```
 
 ------------------------------------------------------------------------
 
-You may have noticed---the boundaries of the planning area aren't anywhere close to the boundaries for the Census tracts. Thankfully, I can use the `{getACS}` package to weight tract data based on the block-level population or households:
+The `{getACS}` package provides functions to weight tract-level estimates based on share of the block-level population or households that live.
+
+Start by making a crosswalk between block and tract data:
 
 ```{r}
 block_xwalk <- make_block_xwalk("MD", "Baltimore city", crs = 3857)
 
-area_xwalk <- make_area_xwalk(area, block_xwalk, crs = 3857)
+block_xwalk
+```
 
-area_housing_cost_data <- use_area_xwalk(area_housing_cost_data, area_xwalk)
+::: footer
+`tidycensus::interpolate_pw()` is another option for interpolating U.S. Census data in R.
+:::
+
+------------------------------------------------------------------------
+
+Then make a crosswalk between the area and tracts:
+
+```{r}
+area_xwalk <- make_area_xwalk(area, block_xwalk)
+
+area_xwalk
+```
+
+------------------------------------------------------------------------
+
+We can then use the crosswalk to adjust the ACS data:
+
+```{r}
+area_acs_data <- use_area_xwalk(acs_data, area_xwalk)
+
+area_acs_data
 ```
 
 ------------------------------------------------------------------------
@@ -492,90 +868,136 @@ area_housing_cost_data <- use_area_xwalk(area_housing_cost_data, area_xwalk)
 But data for a single planning area doesn't say much without context. `{getACS}` extends `{tidycensus}` to support downloading multiple geographies at once:
 
 ```{r}
-regional_housing_cost_data <- get_acs_geographies(
-  geographies = c("county", "metropolitan statistical area/micropolitan statistical area"),
+regional_acs_data <- get_acs_geographies(
+  geography = c("county", "metropolitan statistical area/micropolitan statistical area"),
   table = "B25105",
   state = "MD",
   county = "Baltimore city",
   msa = "Baltimore-Columbia-Towson, MD Metro Area"
 )
 
-tbl_housing_cost_data <- bind_rows(
-  area_housing_cost_data,
-  regional_housing_cost_data
+tbl_acs_data <- bind_rows(
+  area_acs_data,
+  regional_acs_data
 )
+
+tbl_acs_data <- select_acs_cols(tbl_acs_data, column_title_col = NULL)
 ```
 
 ------------------------------------------------------------------------
 
-Then I can use another `{getACS}` function built around the `{gt}` package to create a formatted table:
+Then I can use `gt_acs()` (a `{getACS}` function built around the `gt()` function from the `{gt}` package) to create a formatted table:
 
 ```{r}
 gt_acs(
-  tbl_housing_cost_data
-)
+  data = tbl_acs_data,
+  rowname_col = "NAME",
+  est_col_label = "Median monthly housing costs",
+  table = "B25105"
+) |>
+  fmt_currency(c("estimate", "moe"), decimals = 0)
 ```
 
-I can even use another package `{officer}` to insert the table directly into a Microsoft Word document.
+#### Plotting demographic data with `{ggplot2}`
 
-------------------------------------------------------------------------
+A similar workflow is used to create production-ready plots and graphics using  `{ggplot2}`:
 
-```{r}
-#| echo: false
-#| eval: true
-#| file: R/getACS-example.R
-```
+![](images/john-ruhrah-ems_demographics.png)
 
-## Exploring School Enrollment Data
+# Why use R as your GIS?
 
-```{r}
-#| echo: false
-#| eval: true
-#| file: R/bcpss-example.R
-```
+## What are the advantages of using R?
 
-```{r}
-library(mapmaryland)
-library(marylandedu)
-```
+-   **Speed:** Working interactively at the command line or writing scripts can be even faster than pointing-and-clicking around a desktop GIS
+-   **Collaboration:**: Engaging with the open-source R community offers opportunities to work users and developers
+-   **Reproducibility:**  Writing transparent and documented workflows with parametrized functions that you can use, reuse, and adapt
 
-## Who else is using R?
+## Who else is using R in Baltimore?
 
--   [Chicago Metropolitan Agency for Planning](https://www.cmap.illinois.gov/ "https://www.cmap.illinois.gov/") (e.g. using [cmapgeo](https://cmap-repos.github.io/cmapgeo/ "https://cmap-repos.github.io/cmapgeo/") and other tools for internal analysis/visualization),
+:::: {.columns}
+
+::: {.column width='65%'}
+Within Baltimore City government, R is used routinely by data and research staff, the Baltimore City Department of Finance, the Mayor's Office of Recovery Programs, Mayor's Office of Performance and Innovation, and the Baltimore City Public School System.
+:::
+
+::: {.column width='35%'}
+![](images/baltimore-budget-book_fy23_executive_summary_cover.jpg)
+:::
+
+::::
+
+## Who else is using R for planning?
+
 -   the [California Integrated Transit Project](https://www.calitp.org/ "https://www.calitp.org/") (e.g. using [tidytransit](https://r-transit.github.io/tidytransit/index.html "https://r-transit.github.io/tidytransit/index.html") for standardizing transit data),
--   Urban Institute's Education Data API (e.g. using [an R package](https://urbaninstitute.github.io/education-data-package-r/ "https://urbaninstitute.github.io/education-data-package-r/") to support research data access),
 -   and [DataHaven](https://www.ctdatahaven.org/ "https://www.ctdatahaven.org/") (e.g. using [tidycensus](https://walker-data.com/tidycensus/ "https://walker-data.com/tidycensus/") for reproducible reports like the [Connecticut Town Equity Reports](https://www.ctdatahaven.org/reports/connecticut-town-equity-reports "https://www.ctdatahaven.org/reports/connecticut-town-equity-reports"))
 
-### What are people saying about R?
+::: notes
+-   R is being used by public sector workers to do spatial data analysis at USGS, Wisconsin Department of Transportation, the Chicago Metropolitan Agency for Planning, and the Montgomery County Department of Planning---just to name a few.
+:::
 
----
+### Urban Institute
 
-> "The suite of geospatial visualization and analysis tools in R is head and shoulders better than SAS and Stata and often easier and more reproducible than ArcGIS.
+![](images/Screenshot%202023-08-01%20at%2010.09.23%20PM.png)
 
-Graham MacDonald, Chief Information Officer, Vice President for Technology and Data Science, Urban Institute
+### Urban Institute
 
----
+![](images/Screenshot%202023-08-01%20at%2010.09.15%20PM.png)
 
-> Most of what we use R for is "under the hood" to access and manipulate data that later gets inserted into plans, reports, and GIS applications.
+### Urban Institute
 
-Ben Kraft, Planning Research Coordinator, Montgomery Planning
+"The suite of geospatial visualization and analysis tools in R is head and shoulders better than SAS and Stata and often easier and more reproducible than ArcGIS."
 
----
+::: footer
+— Graham MacDonald, CIO, VP for Technology and Data Science from [R Is the Best Programming Language for Innovation at Urban](https://urban-institute.medium.com/r-is-the-best-programming-language-for-innovation-at-urban-155e2ebf5c74)
+::::
 
-> Typing and executing commands at the command-line is, in many cases, faster than pointing-and-clicking around the graphical user interface (GUI) of a desktop GIS. For some applications such as Spatial Statistics and modeling R may be the *only* realistic way to get the work done.
+::: notes
+Urban Institute's Education Data API (e.g. using [an R package](https://urbaninstitute.github.io/education-data-package-r/ "https://urbaninstitute.github.io/education-data-package-r/") to support research data access)
 
----
+In a 2019 post Graham MacDonald, Chief Information Officer, Vice President for Technology and Data Science explained why the Urban Institue is using R and why from his perspective R is the "programming tool researchers most need in their toolkits." MacDonald's [background](https://www.urban.org/author/graham-macdonald) also includes a stint at the San Francisco Planning Department.
 
-Within Baltimore City government, R is used routinely by data and research staff, the Baltimore City Department of Finance, the Mayor's Office of Recovery Programs, Mayor's Office of Performance and Innovation, and Baltimore City Public Schools.
+MacDonald explains how R has the capacity to:
 
-R is being used by public sector workers to do spatial data analysis at USGS, Wisconsin Department of Transportation, the Chicago Metropolitan Agency for Planning, and the Montgomery County Department of Planning---just to name a few. R is the the Urban Institute,
+-   quickly create consistent and attractive data visualizations
+
+-   efficiently read and process big datasets
+
+-   access and analyze non-traditional data sources such as web-based APIs
+
+But, the most relevant reason for today's discussion is MacDonald's description of the virtue of R for geospatial analysis, writing:
+
+> "The suite of geospatial visualization and analysis tools in R is head and shoulders better than SAS and Stata and often easier and more reproducible than ArcGIS. Urban researchers often switch to R to use [urbnmapr, our mapping package,](https://medium.com/@urban_institute/how-to-create-state-and-county-maps-easily-in-r-577d29300bb2) solely to create maps of the US in an easily reproducible way. And complex geospatial analyses that you would have to take out of Stata or SAS, into ArcGIS or QGIS, and back into Stata or SAS again [can all be integrated into a single script](https://walkerke.github.io/tidycensus/articles/spatial-data.html), reducing the potential for error and increasing efficiency."
+:::
+
+### Montgomery Planning
+
+![](images/Screenshot%202023-08-01%20at%2010.13.25%20PM.png)
+
+### Montgomery Planning
+
+![](images/Screenshot%202023-08-01%20at%2010.10.49%20PM.png)
+
+### Montgomery Planning
+
+"Most of what we use R for is 'under the hood' to access and manipulate data that later gets inserted into plans, reports, and GIS applications."
+
+::: footer
+— Ben Kraft, Planning Research Coordinator, Montgomery Planning
+:::
 
 # Resources
 
 ## Books on programming with R
 
 -   [R for Data Science by Hadley Wickham](https://r4ds.hadley.nz/) "will teach you how to do data science with R: You'll learn how to get your data into R, get it into the most useful structure, transform it and visualize."
--   [Hands on Programming with R](https://rstudio-education.github.io/hopr/) by Garrett Grolemund, is "an introduction to R as a programming language and is a great place to start if R is your first programming language\*."
+-   [Hands on Programming with R](https://rstudio-education.github.io/hopr/) by Garrett Grolemund, is "an introduction to R as a programming language and is a great place to start if R is your first programming language."
 -   [Advanced R](https://adv-r.hadley.nz/) by Hadley Wickham "dives into the details of R the programming language; it's great place to start if you have existing programming experience"
 
 ## Books on spatial data analysis with R
+
+-   [Geocomputation with R](https://r.geocompx.org/) by Robin Lovelace, Jakub Nowosad, and Jannes Muenchow is a book for people who want to analyze, visualize and model geographic data with open source software.
+-   [Spatial Data Science With Applications in R](https://r-spatial.org/book/) by Edzer Pebesma and Roger Bivand introduces fundamental aspects of spatial data that every data scientist should know before they start working with spatial data.
+
+# Thank you!
+
+Find the presentation at [elipousson.github.io/presentation-tugis2023/](https://elipousson.github.io/presentation-tugis2023/) or the code at [github.com/elipousson/presentation-tugis2023](https://github.com/elipousson/presentation-tugis2023)

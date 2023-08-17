@@ -103,5 +103,12 @@
     "title": "Using R as your GIS",
     "section": "5.2 Books on spatial data analysis with R",
     "text": "5.2 Books on spatial data analysis with R\n\nGeocomputation with R by Robin Lovelace, Jakub Nowosad, and Jannes Muenchow is a book for people who want to analyze, visualize and model geographic data with open source software.\nSpatial Data Science With Applications in R by Edzer Pebesma and Roger Bivand introduces fundamental aspects of spatial data that every data scientist should know before they start working with spatial data."
+  },
+  {
+    "objectID": "index.html#additional-resources",
+    "href": "index.html#additional-resources",
+    "title": "Using R as your GIS",
+    "section": "5.3 Additional resources",
+    "text": "5.3 Additional resources\nThese GitHub lists include resources on R, Python, and QGIS:\n\nR for Planners: A list of R projects and packages created for and by community and transportation planners for research and planning practice.\nspatial data education: A list of educational resources, tutorials, and course materials related to building, organizing, and analyzing spatial data using R, Python, and other tools.\nspatial data workshops: A list of workshops and hands-on tutorials on working with spatial data using R, Python, or desktop GIS software."
   }
 ]

@@ -97,7 +97,7 @@ Finally, I'll wrap up by sharing a few examples of how R is being used for commu
 
 ::: columns
 ::: {.column width="70%"}
-R is best known for as a _statistical_ programming language often used in data science and research.
+R is best known for as a *statistical* programming language often used in data science and research.
 
 Like Python or C++, R is an **object-oriented, functional programming language** where the base set of features can be extended through open-source packages or libraries.
 :::
@@ -188,7 +188,7 @@ Packages let you work with everything from Microsoft Word documents to 3D render
 :::
 
 ::: footer
-If a package doesn't exist already, there are also packages like `{usethis}` or `{devtools}` that help _you_ build it.
+If a package doesn't exist already, there are also packages like `{usethis}` or `{devtools}` that help *you* build it.
 :::
 
 ## How does R work with spatial data?
@@ -608,21 +608,19 @@ These examples also don't highlight the spatial features of R to their fullest e
 
 ### Using the `{mapbaltimore}` package
 
-:::: {.columns}
-
-::: {.column width='40%'}
+::: columns
+::: {.column width="40%"}
 ![](images/mapbaltimore-logo.png)
 :::
 
-::: {.column width='60%'}
+::: {.column width="60%"}
 Loading the `{mapbaltimore}` package gives you access to:
 
-- Neighborhoods
-- Administrative and political boundaries
-- INSPIRE plan area boundaries and much more
+-   Neighborhoods
+-   Administrative and political boundaries
+-   INSPIRE plan area boundaries and much more
 :::
-
-::::
+:::
 
 ### Using the `{mapbaltimore}` package
 
@@ -638,12 +636,12 @@ area <- inspire_plans[5, ]
 ```
 
 ::: notes
-I could get data from a FeatureLayer using `{esr2sf}` but I more often use `{mapbaltimore}`—a data package I created to organize spatial data for Baltimore City. The package includes the boundaries for our INSPIRE Planning areas:
+I could get data from a FeatureLayer using `{esr2sf}` but I more often use `{mapbaltimore}`---a data package I created to organize spatial data for Baltimore City. The package includes the boundaries for our INSPIRE Planning areas:
 :::
 
 ### Using the `{mapbaltimore}` package
 
-The package also has "helper" functions like `get_area_streets()`:
+The package includes "helper" functions like `get_area_streets()` to filter data by name or location:
 
 ```{r}
 area_streets <- get_area_streets(area)
@@ -659,24 +657,22 @@ area_streets
 
 ## Using R for the Commodore John Rodgers EMS INSPIRE Plan
 
-:::: {.columns}
-
-::: {.column width='40%'}
+::: columns
+::: {.column width="40%"}
 INSPIRE supports improvements along school walking routes but we first need to figure out:
 
-- Where are safety improvements needed?
-- What routes do students take to school?
+-   Where are safety improvements needed?
+-   What routes do students take to school?
 :::
 
-::: {.column width='60%'}
+::: {.column width="60%"}
 ![](images/2022-11-16_commodore-john-rodgers-ems.jpeg)
 :::
-
-::::
+:::
 
 #### Where are safety improvements needed?
 
-The `{mapmaryland}` package to download and format data from the [state open data portal](https://opendata.maryland.gov/) for vehicle crashes:
+The `{mapmaryland}` package includes a function to download and format data from the [state open data portal](https://opendata.maryland.gov/) for vehicle crashes:
 
 ```{r}
 #| eval: false
@@ -734,23 +730,21 @@ ggplot(data = injury_crashes) +
 
 #### Where are safety improvements needed?
 
-:::: {.columns}
-
-::: {.column width='40%'}
+::: columns
+::: {.column width="40%"}
 We included crash data on a packet of printed maps helped we used during a walk around the neighborhood to identify priority locations.
 :::
 
-::: {.column width='60%'}
+::: {.column width="60%"}
 ![Eli Pousson and Imani Jasper (Eastern District Planner)](images/5E8BD00E-3466-4C1D-8F56-428A7EEDE725_1_105_c.jpeg)
 :::
-
-::::
+:::
 
 #### What routes do students take to school?
 
 ![Data from BCPSS on student addresses supported the creation of maps showing the distribtion of student addresses.](images/2022-12-14_cjrems-walking-route-map.png)
 
-:::footer
+::: footer
 The `{mapboxapi}` package provided the 15-minute walking distance isochrones and the custom basemap in this `{ggplot2}` map.
 :::
 
@@ -769,7 +763,6 @@ The `{mapboxapi}` package provided the 15-minute walking distance isochrones and
 The INSPIRE program is creating a community plan for each INSPIRE area.
 
 For each plan, we need to know: what are the area demographics and housing conditions?
-
 :::
 :::
 
@@ -833,7 +826,7 @@ mapview(list(area, st_filter(acs_data, area)))
 
 ------------------------------------------------------------------------
 
-The `{getACS}` package provides functions to weight tract-level estimates based on share of the block-level population or households that live.
+The [`{getACS}`](https://elipousson.github.io/getACS/index.html) package provides functions to weight tract-level estimates based on share of the block-level population or households that live.
 
 Start by making a crosswalk between block and tract data:
 
@@ -904,7 +897,7 @@ gt_acs(
 
 #### Plotting demographic data with `{ggplot2}`
 
-A similar workflow is used to create production-ready plots and graphics using  `{ggplot2}`:
+A similar workflow is used to create production-ready plots and graphics using `{ggplot2}`:
 
 ![](images/john-ruhrah-ems_demographics.png)
 
@@ -914,21 +907,19 @@ A similar workflow is used to create production-ready plots and graphics using  
 
 -   **Speed:** Working interactively at the command line or writing scripts can be even faster than pointing-and-clicking around a desktop GIS
 -   **Collaboration:**: Engaging with the open-source R community offers opportunities to work users and developers
--   **Reproducibility:**  Writing transparent and documented workflows with parametrized functions that you can use, reuse, and adapt
+-   **Reproducibility:** Writing transparent and documented workflows with parametrized functions that you can use, reuse, and adapt
 
 ## Who else is using R in Baltimore?
 
-:::: {.columns}
-
-::: {.column width='65%'}
+::: columns
+::: {.column width="65%"}
 Within Baltimore City government, R is used routinely by data and research staff, the Baltimore City Department of Finance, the Mayor's Office of Recovery Programs, Mayor's Office of Performance and Innovation, and the Baltimore City Public School System.
 :::
 
-::: {.column width='35%'}
+::: {.column width="35%"}
 ![](images/baltimore-budget-book_fy23_executive_summary_cover.jpg)
 :::
-
-::::
+:::
 
 ## Who else is using R for planning?
 
@@ -952,8 +943,8 @@ Within Baltimore City government, R is used routinely by data and research staff
 "The suite of geospatial visualization and analysis tools in R is head and shoulders better than SAS and Stata and often easier and more reproducible than ArcGIS."
 
 ::: footer
-— Graham MacDonald, CIO, VP for Technology and Data Science from [R Is the Best Programming Language for Innovation at Urban](https://urban-institute.medium.com/r-is-the-best-programming-language-for-innovation-at-urban-155e2ebf5c74)
-::::
+--- Graham MacDonald, CIO, VP for Technology and Data Science from [R Is the Best Programming Language for Innovation at Urban](https://urban-institute.medium.com/r-is-the-best-programming-language-for-innovation-at-urban-155e2ebf5c74)
+:::
 
 ::: notes
 Urban Institute's Education Data API (e.g. using [an R package](https://urbaninstitute.github.io/education-data-package-r/ "https://urbaninstitute.github.io/education-data-package-r/") to support research data access)
@@ -986,7 +977,7 @@ But, the most relevant reason for today's discussion is MacDonald's description 
 "Most of what we use R for is 'under the hood' to access and manipulate data that later gets inserted into plans, reports, and GIS applications."
 
 ::: footer
-— Ben Kraft, Planning Research Coordinator, Montgomery Planning
+--- Ben Kraft, Planning Research Coordinator, Montgomery Planning
 :::
 
 # Resources
@@ -1001,6 +992,14 @@ But, the most relevant reason for today's discussion is MacDonald's description 
 
 -   [Geocomputation with R](https://r.geocompx.org/) by Robin Lovelace, Jakub Nowosad, and Jannes Muenchow is a book for people who want to analyze, visualize and model geographic data with open source software.
 -   [Spatial Data Science With Applications in R](https://r-spatial.org/book/) by Edzer Pebesma and Roger Bivand introduces fundamental aspects of spatial data that every data scientist should know before they start working with spatial data.
+
+## Additional resources
+
+These GitHub lists include resources on R, Python, and QGIS:
+
+-   [R for Planners](https://github.com/stars/elipousson/lists/r-for-planners): A list of R projects and packages created for and by community and transportation planners for research and planning practice.
+-   [spatial data education](https://github.com/stars/elipousson/lists/spatial-data-education): A list of educational resources, tutorials, and course materials related to building, organizing, and analyzing spatial data using R, Python, and other tools.
+-   [spatial data workshops](https://github.com/stars/elipousson/lists/spatial-data-workshops): A list of workshops and hands-on tutorials on working with spatial data using R, Python, or desktop GIS software.
 
 # Thank you!
 

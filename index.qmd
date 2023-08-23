@@ -878,7 +878,7 @@ tbl_acs_data <- bind_rows(
   regional_acs_data
 )
 
-tbl_acs_data <- select_acs_cols(tbl_acs_data, column_title_col = NULL)
+tbl_acs_data <- select_acs(tbl_acs_data, .column_title_col = NULL)
 ```
 
 ------------------------------------------------------------------------
@@ -889,7 +889,7 @@ Then I can use `gt_acs()` (a `{getACS}` function built around the `gt()` functio
 gt_acs(
   data = tbl_acs_data,
   rowname_col = "NAME",
-  est_col_label = "Median monthly housing costs",
+  value_label = "Median monthly housing costs",
   table = "B25105"
 ) |>
   fmt_currency(c("estimate", "moe"), decimals = 0)
